@@ -10,7 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+from django.utils.timezone import timedelta
 from pathlib import Path
+
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-gqytfmt4k)8cx_z&^_vtd8h5z8msf3yss6%px9n%%0jqlk&xyy'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG')
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS').split()
 
 
 # Application definition
@@ -37,21 +40,27 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'djoser',
 
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework.authtoken',
 
+    'drf_yasg',
     'users.apps.UsersConfig',
-    'tournaments.apps.TournamentsConfig',
     'booking.apps.BookingConfig',
-
+    'food.apps.FoodConfig',
 ]
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=12),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
+
 AUTH_USER_MODEL = 'users.CustomUser'
 
 MIDDLEWARE = [
@@ -89,9 +98,14 @@ WSGI_APPLICATION = 'computer_club.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": config("SQL_ENGINE", 'django.db.backends.sqlite3'),
+        "NAME": config("SQL_DATABASE", 'db.sqlite3'),
+        # "USER": config("SQL_USER"),
+        # "PASSWORD": config("SQL_PASSWORD"),
+        # "HOST": config("SQL_HOST"),
+        # "PORT": config("SQL_PORT"),
+
     }
 }
 
@@ -120,7 +134,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Bishkek'
 
 USE_I18N = True
 
@@ -136,3 +150,17 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# CELERY, REDIS
+REDIS_URL = config('REDIS_URL')
+REDIS_PORT = config('REDIS_PORT')
+
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_BROKER_URL = config('REDIS_URL')
+CELERY_BACKEND_URL = config('REDIS_URL')
+
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = config('TIMEZONE')
+
+BROKER_URL = config('REDIS_URL')
+BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}

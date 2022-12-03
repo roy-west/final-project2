@@ -1,23 +1,25 @@
-from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.permissions import IsAuthenticated
 
-from datetime import datetime
+from .models import ComputerRoom, Computer, Order
+from .serializers import (
+    OrderCreateSerializer,
+    ComputerRoomListSerializer,
+    ComputerListSerializer,
+)
 
-from users.models import CustomUser
-from .models import Computer, Order
+
+class OrderCreateAPIView(CreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderCreateSerializer
+    permission_classes = [IsAuthenticated]
 
 
+class ComputerRoomListAPIView(ListAPIView):
+    queryset = ComputerRoom.objects.all()
+    serializer_class = ComputerRoomListSerializer
 
-@api_view(['GET', 'POST'])
-def order_create(requests):
-    user = CustomUser.objects.get(id=1)
-    comp = Computer.objects.get(id=1)
-    order = Order.objects.create(
-        user=user,
-        computer=comp,
-        booking_time=datetime.now(),
-    )
-    return Response({'order_id': order.id})
 
+class ComputerListAPIView(ListAPIView):
+    queryset = Computer.objects.all()
+    serializer_class = ComputerListSerializer
