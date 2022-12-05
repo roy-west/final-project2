@@ -3,7 +3,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from .tasks import manage_computer
-from .models import ComputerRoom, Computer, Order
+from .models import ComputerRoom, Computer, Order, RateComputerRoom
 
 
 class OrderCreateSerializer(serializers.ModelSerializer):
@@ -71,4 +71,10 @@ class ComputerListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Computer
+        fields = '__all__'
+
+
+class RateComputerRoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RateComputerRoom
         fields = '__all__'

@@ -26,7 +26,7 @@ class RateComputerRoom(models.Model):
                                 verbose_name='Цена (22:00 - 18:00)')
 
     def __str__(self):
-        return self.room
+        return f"{self.room} - {self.one_hour}"
 
 
 class Computer(models.Model):

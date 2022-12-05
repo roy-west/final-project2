@@ -1,11 +1,12 @@
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 
-from .models import ComputerRoom, Computer, Order
+from .models import ComputerRoom, Computer, Order,  RateComputerRoom
 from .serializers import (
     OrderCreateSerializer,
     ComputerRoomListSerializer,
     ComputerListSerializer,
+    RateComputerRoomSerializer
 )
 
 
@@ -23,3 +24,9 @@ class ComputerRoomListAPIView(ListAPIView):
 class ComputerListAPIView(ListAPIView):
     queryset = Computer.objects.all()
     serializer_class = ComputerListSerializer
+
+
+class RateComputerRoomAPIView(ListAPIView):
+    queryset = RateComputerRoom.objects.all()
+    serializer_class = RateComputerRoomSerializer
+
