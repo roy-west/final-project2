@@ -10,3 +10,4 @@ celery_app = Celery('computer_club', result_expires=60)
 celery_app.config_from_object('django.conf:settings')
 
 celery_app.autodiscover_tasks()
+
