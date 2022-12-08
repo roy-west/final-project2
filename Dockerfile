@@ -8,7 +8,7 @@ FROM python:3.10-slim as builder
 # set work directory
 WORKDIR /usr/src/app
 
-# set environment variables
+# set environment x variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
