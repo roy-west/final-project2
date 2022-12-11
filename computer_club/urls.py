@@ -40,4 +40,6 @@ urlpatterns = [
     path('api/v1/', include('users.urls')),
     path('api/v1/', include('booking.urls')),
     path('api/v1/', include('food.urls')),
+    path('api/v1/', include('rules.urls')),
+    path('verification/', include('verify_email.urls')),
 ]
