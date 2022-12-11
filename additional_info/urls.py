@@ -1,8 +1,12 @@
 from django.urls import path
 from .views import (
-    RulesListAPIView,
+    AddressListAPIView,
+    AdvantageListAPIView,
+    QuestionListAPIView,
 )
 
 urlpatterns = [
-    path('rules-list/', RulesListAPIView.as_view(), name='rules-list'),
+    path('address-list/', AddressListAPIView.as_view(), name='address-list'),
+    path('advantage-list/', AdvantageListAPIView.as_view(), name='advantage-list'),
+    path('question-list/', QuestionListAPIView.as_view(), name='question-list'),
 ]

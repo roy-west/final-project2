@@ -1,3 +1,20 @@
-from django.shortcuts import render
+from rest_framework.generics import ListAPIView
 
-# Create your views here.
+from .models import Address, Advantage, Question
+from .serializers import AddressListSerializer, AdvantageListSerializer, QuestionListSerializer
+
+
+class AdvantageListAPIView(ListAPIView):
+    queryset = Advantage.objects.all()
+    serializer_class = AdvantageListSerializer
+    
+
+class AddressListAPIView(ListAPIView):
+    queryset = Address.objects.all()
+    serializer_class = AddressListSerializer
+    
+    
+class QuestionListAPIView(ListAPIView):
+    queryset = Question.objects.all()
+    serializer_class = QuestionListSerializer
+
